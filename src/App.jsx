@@ -55,7 +55,7 @@ function Header() {
       className={`transease backdrop-grayscale ${
         loading
           ? "h-[100vh] max-w-[100vw] max-h-[100vh]"
-          : "h-[40vh] max-w-[1500px] lg:h-[50vh] max-h-[1100px]"
+          : "h-[40vh] lg:h-[50vh] max-h-[1100px]"
       } min-h-[400px]`}
     >
       <div
@@ -151,9 +151,9 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
 
   return (
     <div
-      className={`fixed min-h-screen ${
+      className={`min-h-screen ${
         activeProj ? "translate-y-0" : "translate-y-[-5000px]"
-      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500] top-0 left-0`}
+      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500]`}
     >
       <ProjHeader loading={loading} bgImage={activeProj.bgImage}>
         <div className="w-full h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
@@ -212,8 +212,9 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
 }
 
 function ProjPortfolio() {
-  const [activeProj, setActiveProj] = useState();
+  // const [activeProj, setActiveProj] = useState();
   const [hoveredProj, setHoveredProj] = useState(null);
+  const { activeProj, setActiveProj } = useContext(ThemeContext);
 
   useEffect(() => {
     console.log("active", activeProj);
@@ -261,6 +262,7 @@ function App() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [activeProj, setActiveProj] = useState();
 
   // useEffect(() => {
   //   console.log("loading", loading);
@@ -278,34 +280,38 @@ function App() {
       bgColor={theme.bg}
       txtColor={theme.txt}
     >
-      <ThemeContext.Provider value={{ theme, setTheme, loading, setLoading }}>
+      <ThemeContext.Provider value={{ theme, setTheme, loading, setLoading, activeProj, setActiveProj }}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
 
+              {activeProj ? <ActiveProjModal activeProj={activeProj} setActiveProj={setActiveProj} /> : <>
 
-            <Routes>
-              <Route
-                path="/"
-                element={
+              <Header />
+                {loading ? (
+                  <></>
+                ) : (
                   <>
-                    <Header />
-                    { loading ? <></> : <>
-                      <Nav />
-                      <ProjPortfolio />
-                    </>}
+                    <Nav />
+                    <ProjPortfolio />
                   </>
-                }
-              />
-              <Route path='/vinylphile'
-              element={<></>} />
+                )}
 
-            </Routes>
-            {/* <Nav />
+              </>}
+
+
+              </>
+            }
+          />
+        </Routes>
+        {/* <Nav />
             <ProjPortfolio /> */}
 
-            {/* <div className="bg-gradient-to-r h-[100px] w-screen bg-opacity-50 from-blue-500 to-pink-400">
+        {/* <div className="bg-gradient-to-r h-[100px] w-screen bg-opacity-50 from-blue-500 to-pink-400">
 
             </div> */}
-
-    
       </ThemeContext.Provider>
     </Theme>
   );
