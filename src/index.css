@@ -46,6 +46,10 @@
   animation: slideDown 300ms linear forwards;
 }
 
+.drop-shadow-white {
+  filter: drop-shadow(25px 25px 25px rgb(255 255 255));
+}
+
 @keyframes slideDown {
   from { transform: translateY(0); }
   to { transform: translateY(-10000px); opacity: 0; }

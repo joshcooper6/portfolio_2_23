@@ -15,7 +15,7 @@ const Theme = styled.div`
   min-height: 100vh;
   background-color: ${(props) => props.highlight};
   color: white;
-  padding-bottom: 1em;
+  padding-bottom: ${(props) => (props.loading ? "0" : "1em")};
 `;
 
 const PhotoHeader = styled.div`
@@ -24,12 +24,13 @@ const PhotoHeader = styled.div`
   background-position: top;
   position: relative;
   width: 100%;
-  filter: ${(props) => (props.loading ? "grayscale(1)" : "grayscale(0)")};
+  // filter: ${(props) => (props.loading ? "grayscale(1)" : "grayscale(0)")};
 
   &:after {
     content: " ";
     position: absolute;
     z-index: 1;
+    display: ${(props) => props.loading && "none"};
     opacity: ${(props) => (props.loading ? ".8" : "1")};
     bottom: 0;
     left: 0;
@@ -46,17 +47,41 @@ const PhotoHeader = styled.div`
 `;
 
 function Header() {
-  const { loading } = useContext(ThemeContext);
+  const { loading, setLoading } = useContext(ThemeContext);
   return (
     <PhotoHeader
       loading={loading}
       className={`transease backdrop-grayscale ${
         loading
-          ? "h-[100vh] max-h-[100vh]"
+          ? "h-[100vh] max-w-[100vw] max-h-[100vh]"
           : "h-[40vh] max-w-[1500px] lg:h-[50vh] max-h-[1100px]"
       } min-h-[400px]`}
     >
-      <div className="w-full h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
+      <div
+        className={`w-full h-full ${
+          loading && "opacity-0"
+        } transease bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl`}
+      />
+
+      <div
+        onClick={() => setLoading((prev) => !prev)}
+        className={`fixed cursor-pointer top-10 left-10 transease ${
+          loading &&
+          "top-20 left-20 scale-[2] bg-gray-800 bg-opacity-80 p-2 rounded-full"
+        }`}
+      >
+        <SVG
+          fillRule={true}
+          clipRule={true}
+          styles={`hover:scale-110 transease`}
+          color={loading ? "white" : "white"}
+          path={
+            loading
+              ? "M15.853 16.56c-1.683 1.517-3.911 2.44-6.353 2.44-5.243 0-9.5-4.257-9.5-9.5s4.257-9.5 9.5-9.5 9.5 4.257 9.5 9.5c0 2.442-.923 4.67-2.44 6.353l7.44 7.44-.707.707-7.44-7.44zm-6.353-15.56c4.691 0 8.5 3.809 8.5 8.5s-3.809 8.5-8.5 8.5-8.5-3.809-8.5-8.5 3.809-8.5 8.5-8.5zm-4.5 8h9v1h-9v-1z"
+              : "M15.853 16.56c-1.683 1.517-3.911 2.44-6.353 2.44-5.243 0-9.5-4.257-9.5-9.5s4.257-9.5 9.5-9.5 9.5 4.257 9.5 9.5c0 2.442-.923 4.67-2.44 6.353l7.44 7.44-.707.707-7.44-7.44zm-6.353-15.56c4.691 0 8.5 3.809 8.5 8.5s-3.809 8.5-8.5 8.5-8.5-3.809-8.5-8.5 3.809-8.5 8.5-8.5zm-4.5 8h4v-4h1v4h4v1h-4v4h-1v-4h-4v-1z"
+          }
+        />
+      </div>
     </PhotoHeader>
   );
 }
@@ -77,7 +102,7 @@ function Nav() {
 function Socials() {
   return (
     <>
-      <div className={`flex transease items-center justify-center p-4 gap-2`}>
+      <div className={`flex transease items-center justify-center p-4 gap-4`}>
         {socials.map((social, indx) => {
           return (
             <a href={social.src} target="_blank" key={indx}>
@@ -125,9 +150,9 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
 
   return (
     <div
-      className={`fixed h-screen ${
+      className={`fixed min-h-screen ${
         activeProj ? "translate-y-0" : "translate-y-[-5000px]"
-      } transease flex-col flex items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500] top-0 left-0 overflow-hidden`}
+      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500] top-0 left-0 overflow-hidden`}
     >
       <ProjHeader loading={loading} bgImage={activeProj.bgImage}>
         <div className="w-full h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
@@ -153,13 +178,33 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         </a>
       </div>
 
+      <div className="w-10/12">
+        {activeProj.desc.split("\n").map((sentence) => {
+          return (
+            <ol className="text-md mt-2 lg:text-xl font-light">
+              <li className="elegant">- {sentence}</li>
+            </ol>
+          );
+        })}
+      </div>
+
+      <div className="w-10/12 flex flex-wrap items-center justify-center gap-4 p-4 mt-4">
+        {activeProj.stack.split(",").map((tech) => {
+          return (
+            <div className="elegant min-w-[100px] text-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-xl p-4">
+              {tech}
+            </div>
+          );
+        })}
+      </div>
+
       <button
         onClick={() => {
           setActiveProj(null);
         }}
-        className="fixed transease bg-[#222222] hover:bg-opacity-90 bg-opacity-20 w-full h-[100px] bottom-0 elegant tracking-widest uppercase font-thin text-center"
+        className=" transease mb-6 cursor-pointer hover:translate-y-[-5px] bg-[#222222] hover:bg-opacity-90 bg-opacity-20 w-9/12 h-[100px] bottom-10 rounded elegant tracking-widest uppercase font-thin text-center"
       >
-        Close
+        Go Back
       </button>
     </div>
   );
@@ -178,7 +223,7 @@ function ProjPortfolio() {
   }, [hoveredProj]);
 
   return (
-    <div className="flex justify-center items-center gap-4 flex-wrap p-4 max-w-[1000px] w-11/12">
+    <div className="flex justify-center flex-wrap items-center gap-4 p-4 max-w-[1000px] w-11/12">
       {projects.map((project, indx) => {
         return (
           <ProjectPreview
@@ -214,15 +259,15 @@ function App() {
     highlight: "#111111",
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("loading", loading);
+  // useEffect(() => {
+  //   console.log("loading", loading);
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [loading]);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 500);
+  // }, []);
 
   return (
     <Theme

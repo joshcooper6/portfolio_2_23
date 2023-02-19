@@ -26,8 +26,13 @@ const projects = [
     title: "Café Inventory",
     bgImage:
       "https://jjdcportfolio.s3.us-west-2.amazonaws.com/Screenshot+2023-01-15+at+8.55.38+PM.png",
-    desc: "",
-    stack: "React.js, Node.js",
+    desc: `Developed and designed an inventory management web application for a small business. 
+    Automatically stores and displays data based on the day of the week and user input. 
+    Implemented user authentication with JWT for enhanced security.
+    Offered seamless integration with third-party APIs and services.
+    Utilized TailwindCSS for front-end design and development, delivering a clean and user-friendly interface.
+    Utilized Git and GitHub for version control and collaboration throughout the development process.`,
+    stack: "React.js, Node.js, MongoDB, JWT, Express, Firebase",
     path: "https://ucl-portal.web.app",
     featured: true,
   },
@@ -35,8 +40,10 @@ const projects = [
     title: "Remembering Ian",
     bgImage:
       "https://jjdcportfolio.s3.us-west-2.amazonaws.com/Screenshot+2023-02-12+at+11.32.07+AM.png",
-    desc: "asdfasdf",
-    stack: "React.js, Node.js",
+    desc: `Created a single-page static application in memory of a beloved uncle who had recently passed away.
+    Designed a clean, minimal, and modern interface to honor the memory of my uncle and provide a pleasant user experience for family and friends.
+    Hosted the application files on AWS S3 and Firebase for easy accessibility and efficient performance.`,
+    stack: "React.js, Node.js, AWS S3, Firebase",
     path: "https://iandebright-bd393.web.app",
     featured: true,
   },
@@ -44,8 +51,14 @@ const projects = [
     title: "Vinylphile",
     bgImage:
       "https://jjdcportfolio.s3.us-west-2.amazonaws.com/Screenshot+2023-01-13+at+4.32.25+PM.png",
-    desc: "",
-    stack: "React.js, Node.js",
+    desc: `Developing a direct-to-consumer e-commerce platform for selling vinyl records
+    Implemented a modern front-end using Vite.js, React.js and Tailwind CSS for an engaging and user-friendly experience.
+    Built a robust and scalable back-end using Node.js, DynamoDB and AWS EC2.
+    Integrated Stripe for secure and seamless payment processing, ensuring the safety and security of customer transactions.
+    Developed features for inventory management, customer management, and order tracking for smooth and efficient operations.
+    Utilized Amazon S3 for static hosting to improve website performance and scalability.
+    Utilized Git and GitHub for version control and collaboration throughout the development process.`,
+    stack: "React.js, Node.js, AWS EC2, AWS DynamoDB, Stripe",
     path: "",
     featured: true,
   },
