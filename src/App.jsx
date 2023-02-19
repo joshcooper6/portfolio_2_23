@@ -6,6 +6,7 @@ import styled from "styled-components";
 import ProjectPreview from "./components/ProjectPreview";
 import SVG from "./components/SVG";
 import { socials, projects } from "./data";
+import { Routes, Route, Link } from "react-router-dom";
 
 const Theme = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Theme = styled.div`
   min-height: 100vh;
   background-color: ${(props) => props.highlight};
   color: white;
-  padding-bottom: ${(props) => (props.loading ? "0" : "1em")};
+  // padding-bottom: ${(props) => (props.loading ? "0" : "1em")};
 `;
 
 const PhotoHeader = styled.div`
@@ -152,7 +153,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
     <div
       className={`fixed min-h-screen ${
         activeProj ? "translate-y-0" : "translate-y-[-5000px]"
-      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500] top-0 left-0 overflow-hidden`}
+      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500] top-0 left-0`}
     >
       <ProjHeader loading={loading} bgImage={activeProj.bgImage}>
         <div className="w-full h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
@@ -188,7 +189,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         })}
       </div>
 
-      <div className="w-10/12 flex flex-wrap items-center justify-center gap-4 p-4 mt-4">
+      <div className="w-10/12 flex flex-wrap gap-4 p-4 mt-4">
         {activeProj.stack.split(",").map((tech) => {
           return (
             <div className="elegant min-w-[100px] text-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-xl p-4">
@@ -278,16 +279,33 @@ function App() {
       txtColor={theme.txt}
     >
       <ThemeContext.Provider value={{ theme, setTheme, loading, setLoading }}>
-        <Header />
 
-        {loading ? (
-          <></>
-        ) : (
-          <>
-            <Nav />
-            <ProjPortfolio />
-          </>
-        )}
+
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Header />
+                    { loading ? <></> : <>
+                      <Nav />
+                      <ProjPortfolio />
+                    </>}
+                  </>
+                }
+              />
+              <Route path='/vinylphile'
+              element={<></>} />
+
+            </Routes>
+            {/* <Nav />
+            <ProjPortfolio /> */}
+
+            {/* <div className="bg-gradient-to-r h-[100px] w-screen bg-opacity-50 from-blue-500 to-pink-400">
+
+            </div> */}
+
+    
       </ThemeContext.Provider>
     </Theme>
   );
