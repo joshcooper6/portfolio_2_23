@@ -64,4 +64,12 @@ const projects = [
   },
 ];
 
-export { socials, projects };
+const about = `
+
+Although I have a degree in psychology, I discovered my love for coding in 2020 and have been freelancing ever since. I've worked with a variety of technologies as you'll be able to see with my projects. 
+
+I'm currently working in third-wave coffee, which helped me develop a keen eye for detail and the ability to approach problems from different angles.
+
+I'm passionate about writing high-quality and maintainable code, staying up-to-date with the latest tech trends, and working collaboratively with team members. If you're looking for a laid-back yet hardworking developer to bring your ideas to life, let's chat!`
+
+export { socials, projects, about };

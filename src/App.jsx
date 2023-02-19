@@ -5,8 +5,7 @@ import ThemeContext from "./context/ThemeContext";
 import styled from "styled-components";
 import ProjectPreview from "./components/ProjectPreview";
 import SVG from "./components/SVG";
-import { socials, projects } from "./data";
-import { Routes, Route, Link } from "react-router-dom";
+import { socials, projects, about } from "./data";
 
 const Theme = styled.div`
   display: flex;
@@ -47,6 +46,48 @@ const PhotoHeader = styled.div`
   }
 `;
 
+const PhotoDivider = styled.div`
+  background-image: url("https://jjdcportfolio.s3.us-west-2.amazonaws.com/img_5999.jpg");
+  background-size: cover;
+  background-position: top;
+  position: relative;
+  width: 100%;
+
+  &:before {
+    content: " ";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0),
+        rgba(17, 17, 17, 1)
+      ),
+      -webkit-linear-gradient(bottom, rgba(255, 255, 255, 0), rgba(17, 17, 17, 1));
+    width: 100%;
+    height: 300px;
+  }
+
+  // &:after {
+  //   content: " ";
+  //   position: absolute;
+  //   z-index: 1;
+  //   bottom: 0;
+  //   left: 0;
+  //   pointer-events: none;
+  //   background-image: linear-gradient(
+  //       to bottom,
+  //       rgba(255, 255, 255, 0),
+  //       rgba(17, 17, 17, 1)
+  //     ),
+  //     -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(17, 17, 17, 1));
+  //   width: 100%;
+  //   height: 300px;
+  // }
+`;
+
 function Header() {
   const { loading, setLoading } = useContext(ThemeContext);
   return (
@@ -66,7 +107,7 @@ function Header() {
 
       <div
         onClick={() => setLoading((prev) => !prev)}
-        className={`fixed cursor-pointer top-10 left-10 transease ${
+        className={`absolute cursor-pointer top-10 left-10 transease ${
           loading &&
           "top-20 left-20 scale-[2] bg-gray-800 bg-opacity-80 p-2 rounded-full"
         }`}
@@ -123,6 +164,8 @@ function Socials() {
 function ActiveProjModal({ activeProj, setActiveProj }) {
   const { loading } = useContext(ThemeContext);
 
+  useEffect(() => {window.scrollTo(0, 0)}, [])
+
   const ProjHeader = styled.div`
     background-image: url(${(props) => props.bgImage});
     background-size: cover;
@@ -151,9 +194,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
 
   return (
     <div
-      className={`min-h-screen ${
-        activeProj ? "translate-y-0" : "translate-y-[-5000px]"
-      } transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500]`}
+      className={`min-h-screen transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500]`}
     >
       <ProjHeader loading={loading} bgImage={activeProj.bgImage}>
         <div className="w-full h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
@@ -189,7 +230,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         })}
       </div>
 
-      <div className="w-10/12 flex flex-wrap gap-4 p-4 mt-4">
+      <div className="w-10/12 flex flex-wrap gap-4 p-4 mt-2 mb-4">
         {activeProj.stack.split(",").map((tech) => {
           return (
             <div className="elegant min-w-[100px] text-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-xl p-4">
@@ -203,7 +244,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         onClick={() => {
           setActiveProj(null);
         }}
-        className=" transease mb-6 cursor-pointer hover:translate-y-[-5px] bg-[#222222] hover:bg-opacity-90 bg-opacity-20 w-9/12 h-[100px] bottom-10 rounded elegant tracking-widest uppercase font-thin text-center"
+        className=" transease mb-6 cursor-pointer hover:translate-y-[-5px] bg-[#222222] hover:bg-opacity-90 bg-opacity-100 w-9/12 h-[100px] bottom-10 rounded elegant tracking-widest uppercase font-thin text-center"
       >
         Go Back
       </button>
@@ -263,6 +304,7 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [activeProj, setActiveProj] = useState();
+  const [readMore, setReadMore] = useState(false);
 
   // useEffect(() => {
   //   console.log("loading", loading);
@@ -280,38 +322,73 @@ function App() {
       bgColor={theme.bg}
       txtColor={theme.txt}
     >
-      <ThemeContext.Provider value={{ theme, setTheme, loading, setLoading, activeProj, setActiveProj }}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-
-              {activeProj ? <ActiveProjModal activeProj={activeProj} setActiveProj={setActiveProj} /> : <>
-
+      <ThemeContext.Provider
+        value={{
+          theme,
+          setTheme,
+          loading,
+          setLoading,
+          activeProj,
+          setActiveProj,
+        }}
+      >
+        <>
+          {activeProj ? (
+            <ActiveProjModal
+              activeProj={activeProj}
+              setActiveProj={setActiveProj}
+            />
+          ) : (
+            <>
               <Header />
-                {loading ? (
-                  <></>
-                ) : (
-                  <>
-                    <Nav />
-                    <ProjPortfolio />
-                  </>
-                )}
+              {loading ? (
+                <></>
+              ) : (
+                <>
+                  <Nav />
+                  <div className="w-full mb-6 max-w-[1500px] flex flex-col lg:flex-row items-center justify-center">
+                    <div className="max-w-[600px] text-center flex flex-col p-4 w-10/12 font-light text-xl">
+                      <span>
+                        Hey there, I'm Josh Cooper, a software developer from
+                        Seattle who's all about creating functional and
+                        good-looking applications. I specialize in React, HTML,
+                        CSS, JavaScript, and Node.js.
+                      </span>
 
-              </>}
+                      {readMore &&
+                        about.split("\n").map((sentence) => {
+                          return (
+                            <>
+                              <span>{sentence}</span>
+                              <br />
+                            </>
+                          );
+                        })}
 
+                      <button
+                        onClick={() => setReadMore((prev) => !prev)}
+                        className="mt-4 border p-4 hover:bg-opacity-10 transease hover:bg-white"
+                      >
+                        {readMore ? "Hide About Me" : "Read More"}
+                      </button>
+                    </div>
+                  </div>
 
-              </>
-            }
-          />
-        </Routes>
-        {/* <Nav />
-            <ProjPortfolio /> */}
+                  <ProjPortfolio />
 
-        {/* <div className="bg-gradient-to-r h-[100px] w-screen bg-opacity-50 from-blue-500 to-pink-400">
+                  {/* <button className="mt-4 w-9/12 max-w-[600px] font-light border p-4 hover:bg-opacity-10 transease hover:bg-white">
+                    See More Projects
+                  </button> */}
 
-            </div> */}
+                  <PhotoDivider className="h-[600px] flex justify-center relative">
+                    <div className="w-full absolute h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
+                    <button onClick={() => window.scrollTo(0,0)} className="self-end mb-6 font-light hover:font-bold transease cursor-pointer z-[800]">Back To Top</button>
+                  </PhotoDivider>
+                </>
+              )}
+            </>
+          )}
+        </>
       </ThemeContext.Provider>
     </Theme>
   );
