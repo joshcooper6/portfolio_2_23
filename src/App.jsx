@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState, createContext, useContext, useRef } from "react";
 import "./App.css";
 import { lightMode, darkMode } from "./themes";
 import ThemeContext from "./context/ThemeContext";
@@ -164,7 +164,9 @@ function Socials() {
 function ActiveProjModal({ activeProj, setActiveProj }) {
   const { loading } = useContext(ThemeContext);
 
-  useEffect(() => {window.scrollTo(0, 0)}, [])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const ProjHeader = styled.div`
     background-image: url(${(props) => props.bgImage});
@@ -223,7 +225,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
       <div className="w-10/12">
         {activeProj.desc.split("\n").map((sentence) => {
           return (
-            <ol className="text-md mt-2 lg:text-xl font-light">
+            <ol className="text-md mt-2 lg:text-xl">
               <li className="elegant">- {sentence}</li>
             </ol>
           );
@@ -244,7 +246,7 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         onClick={() => {
           setActiveProj(null);
         }}
-        className=" transease mb-6 cursor-pointer hover:translate-y-[-5px] bg-[#222222] hover:bg-opacity-90 bg-opacity-100 w-9/12 h-[100px] bottom-10 rounded elegant tracking-widest uppercase font-thin text-center"
+        className=" transease mb-6 cursor-pointer hover:translate-y-[-5px] bg-[#222222] hover:bg-opacity-90 bg-opacity-100 w-9/12 h-[100px] bottom-10 rounded elegant tracking-widest uppercase text-center"
       >
         Go Back
       </button>
@@ -305,6 +307,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [activeProj, setActiveProj] = useState();
   const [readMore, setReadMore] = useState(false);
+  const readRef = useRef();
 
   // useEffect(() => {
   //   console.log("loading", loading);
@@ -347,7 +350,10 @@ function App() {
                 <>
                   <Nav />
                   <div className="w-full mb-6 max-w-[1500px] flex flex-col lg:flex-row items-center justify-center">
-                    <div className="max-w-[600px] text-center flex flex-col p-4 w-10/12 font-light text-xl">
+                    <div
+                      ref={readRef}
+                      className="max-w-[600px] text-center flex flex-col p-4 w-10/12 font-light text-xl"
+                    >
                       <span>
                         Hey there, I'm Josh Cooper, a software developer from
                         Seattle who's all about creating functional and
@@ -366,7 +372,10 @@ function App() {
                         })}
 
                       <button
-                        onClick={() => setReadMore((prev) => !prev)}
+                        onClick={() => {
+                          setReadMore((prev) => !prev);
+                          { !readMore ? readRef.current.scrollIntoView() : window.scrollTo(0,0) }
+                        }}
                         className="mt-4 border p-4 hover:bg-opacity-10 transease hover:bg-white"
                       >
                         {readMore ? "Hide About Me" : "Read More"}
@@ -382,7 +391,12 @@ function App() {
 
                   <PhotoDivider className="h-[600px] flex justify-center relative">
                     <div className="w-full absolute h-full bg-gradient-to-br from-blue-500 to-pink-500 opacity-50 rounded-xl" />
-                    <button onClick={() => window.scrollTo(0,0)} className="self-end mb-6 font-light hover:font-bold transease cursor-pointer z-[800]">Back To Top</button>
+                    <button
+                      onClick={() => window.scrollTo(0, 0)}
+                      className="self-end mb-6 font-light hover:font-bold transease cursor-pointer z-[800]"
+                    >
+                      Back To Top
+                    </button>
                   </PhotoDivider>
                 </>
               )}
