@@ -1,3 +1,5 @@
+import vinylphile from './assets/vinylphile.png'
+
 const socials = [
   {
     id: "email",
@@ -50,7 +52,7 @@ const projects = [
   {
     title: "Vinylphile",
     bgImage:
-      "https://jjdcportfolio.s3.us-west-2.amazonaws.com/Screenshot+2023-01-13+at+4.32.25+PM.png",
+      vinylphile,
     desc: `Developing a direct-to-consumer e-commerce platform for selling vinyl records
     Implemented a modern front-end using Vite.js, React.js and Tailwind CSS for an engaging and user-friendly experience.
     Built a robust and scalable back-end using Node.js, DynamoDB and AWS EC2.
@@ -59,7 +61,7 @@ const projects = [
     Utilized Amazon S3 for static hosting to improve website performance and scalability.
     Utilized Git and GitHub for version control and collaboration throughout the development process.`,
     stack: "React.js, Node.js, AWS EC2, AWS DynamoDB, Stripe",
-    path: "",
+    path: "https://vinylphile-56bf9.web.app",
     featured: true,
   },
 ];

@@ -46,6 +46,32 @@ const PhotoHeader = styled.div`
   }
 `;
 
+const ProjHeader = styled.div`
+  background-image: url(${(props) => props.bgImage});
+  background-size: cover;
+  background-position: top;
+  position: relative;
+  width: 100%;
+  height: 44vh;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(17, 17, 17, 1)
+      ),
+      -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(17, 17, 17, 1));
+    width: 100%;
+    height: 300px;
+  }
+`;
+
 const PhotoDivider = styled.div`
   background-image: url("https://jjdcportfolio.s3.us-west-2.amazonaws.com/img_5999.jpg");
   background-size: cover;
@@ -168,32 +194,6 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
     window.scrollTo(0, 0);
   }, []);
 
-  const ProjHeader = styled.div`
-    background-image: url(${(props) => props.bgImage});
-    background-size: cover;
-    background-position: top;
-    position: relative;
-    width: 100%;
-    height: 44vh;
-
-    &:after {
-      content: " ";
-      position: absolute;
-      z-index: 1;
-      bottom: 0;
-      left: 0;
-      pointer-events: none;
-      background-image: linear-gradient(
-          to bottom,
-          rgba(255, 255, 255, 0),
-          rgba(17, 17, 17, 1)
-        ),
-        -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(17, 17, 17, 1));
-      width: 100%;
-      height: 300px;
-    }
-  `;
-
   return (
     <div
       className={`min-h-screen transease flex-col flex justify-between items-center w-screen bg-[#111111] bg-opacity-[.99] z-[500]`}
@@ -222,20 +222,19 @@ function ActiveProjModal({ activeProj, setActiveProj }) {
         </a>
       </div>
 
-      <div className="w-10/12">
-        {activeProj.desc.split("\n").map((sentence) => {
-          return (
-            <ol className="text-md mt-2 lg:text-xl">
-              <li className="elegant">- {sentence}</li>
-            </ol>
-          );
+      <div className="w-9/12 flex flex-col gap-4">
+        {activeProj.desc.split("\n").map((sentence, indx) => {
+          return <span key={indx}>- {sentence}</span>;
         })}
       </div>
 
-      <div className="w-10/12 flex flex-wrap gap-4 p-4 mt-2 mb-4">
-        {activeProj.stack.split(",").map((tech) => {
+      <div className="w-11/12 max-w-[800px] self-center items-center justify-center flex flex-wrap gap-4 p-4 mt-2 mb-4">
+        {activeProj.stack.split(",").map((tech, indx) => {
           return (
-            <div className="elegant min-w-[100px] text-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-xl p-4">
+            <div
+              key={indx}
+              className="elegant text-sm text-center bg-gradient-to-br from-blue-500 to-pink-500 rounded-xl p-4"
+            >
               {tech}
             </div>
           );
@@ -374,7 +373,11 @@ function App() {
                       <button
                         onClick={() => {
                           setReadMore((prev) => !prev);
-                          { !readMore ? readRef.current.scrollIntoView() : window.scrollTo(0,0) }
+                          {
+                            !readMore
+                              ? readRef.current.scrollIntoView()
+                              : window.scrollTo(0, 0);
+                          }
                         }}
                         className="mt-4 border p-4 hover:bg-opacity-10 transease hover:bg-white"
                       >
