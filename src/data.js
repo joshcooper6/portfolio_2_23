@@ -55,12 +55,12 @@ const projects = [
       vinylphile,
     desc: `Developing a direct-to-consumer e-commerce platform for selling vinyl records
     Implemented a modern front-end using Vite.js, React.js and Tailwind CSS for an engaging and user-friendly experience.
-    Built a robust and scalable back-end using Node.js, DynamoDB and AWS EC2.
+    Built a robust and scalable back-end using Node.js and Google Cloud.
     Integrated Stripe for secure and seamless payment processing, ensuring the safety and security of customer transactions.
     Developed features for inventory management, customer management, and order tracking for smooth and efficient operations.
     Utilized Amazon S3 for static hosting to improve website performance and scalability.
     Utilized Git and GitHub for version control and collaboration throughout the development process.`,
-    stack: "React.js, Node.js, AWS EC2, AWS DynamoDB, Stripe",
+    stack: "React.js, Node.js, Google Cloud, Stripe",
     path: "https://vinylphile-56bf9.web.app",
     featured: true,
   },
